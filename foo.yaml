@@ -1,0 +1,19 @@
+apiVersion: krew.googlecontainertools.github.com/v1alpha2
+kind: Plugin
+metadata:
+  name: foo               # plugin name must match your manifest file name
+spec:
+  version: "v0.0.1"       # optional, only for documentation purposes
+  platforms:
+  # specify installation script for linux and darwin (macOS)
+  - selector:             # a regular Kubernetes selector
+      matchExpressions:
+      - {key: os, operator: In, values: [darwin, linux]}
+    head: https://github.com/m-okeefe/foo/archive/master.zip
+    files:                # copy the used files out of the zip file
+    - from: "/foo-master/bin/*"
+      to: "."
+    bin: "./kubectl-foo"  # path to the plugin executable after extracting files
+  shortDescription: Prints the environment variables.
+  description: |
+    Megan's awesome plugin
